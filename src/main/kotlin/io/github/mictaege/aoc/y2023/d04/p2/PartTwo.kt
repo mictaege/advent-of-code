@@ -27,8 +27,6 @@ class WinningStack(val table: Table) {
         table.cards.forEach { addWin(it) }
     }
 
-    fun wins(card: Scratchcard) = won.filter { it == card }.size
-
     private fun addWin(card: Scratchcard) {
         won.add(card)
         for (i in card.index..<card.index + card.matchingNumbers.size) {
