@@ -1,6 +1,5 @@
 package io.github.mictaege.aoc.y2023.d05.p2
 
-import io.github.mictaege.aoc.y2023.d05.example
 import io.github.mictaege.aoc.y2023.d05.input
 import kotlin.math.min
 
