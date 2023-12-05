@@ -1,9 +1,15 @@
-package io.github.mictaege.aoc.y2023.d05.p1
+package io.github.mictaege.aoc.y2023.d05.p2
 
+import io.github.mictaege.aoc.y2023.d05.example
 import io.github.mictaege.aoc.y2023.d05.input
+import kotlin.math.min
 
-class Seed(val value: Long) {
-    var location = 0L
+class SeedRange(val start: Long, val length: Long) {
+    val values: LongRange = start ..< start + length
+    var lowestLocation: Long = Long.MAX_VALUE
+        set(value) {
+            field = min(field, value )
+        }
 }
 
 class MappingRange(val original: String) {
@@ -13,6 +19,7 @@ class MappingRange(val original: String) {
     val destStart = original.split(Regex("\\s+"))[0].toLong()
     val destEnd = srcStart + rangeLength
     val diff = srcStart - destStart
+
     fun matchingDest(start: Long) = start - diff
 }
 
@@ -27,14 +34,22 @@ class Mapping(val original: String) {
 }
 
 class Conversion(val original: String) {
-    val seeds: List<Seed>
+    val seedRanges: List<SeedRange>
     val lowestLocation: Long
-        get() = seeds.minOf { it.location }
+        get() = seedRanges.minOf { it.lowestLocation }
     val mappings: Map<String, Mapping>
 
     init {
         val sections = original.split(Regex("[\r\n][\r\n]"))
-        seeds = sections[0].split(":")[1].trim().split(Regex("\\s+")).map { Seed(it.toLong()) }
+
+        seedRanges = mutableListOf()
+        val seedSplit: List<Long> = sections[0].split(":")[1].trim().split(Regex("\\s+")).map { it.toLong() }
+        seedSplit.forEachIndexed { i, s ->
+            if (i % 2 != 0) {
+                val start: Long = seedSplit[i - 1]
+                seedRanges.add(SeedRange(start, s))
+            }
+        }
 
         mappings = mutableMapOf()
         for (i in 1..< sections.size) {
@@ -42,24 +57,26 @@ class Conversion(val original: String) {
             mappings.put(mapping.source, mapping)
         }
 
-        seeds.forEach {
-            var srcType = "seed"
-            var src = it.value
-            while (mappings.containsKey(srcType)) {
-                val mapping = mappings[srcType]
-                src = mapping!!.mapSrcToDest(src)
-                srcType = mapping.destination
-                if (srcType == "location") {
-                    it.location = src
-                    srcType = "x"
+        seedRanges.forEach {
+            it.values.forEach { v ->
+                var srcType = "seed"
+                var src: Long = v
+                while (mappings.containsKey(srcType)) {
+                    val mapping = mappings[srcType]
+                    src = mapping!!.mapSrcToDest(src)
+                    srcType = mapping.destination
+                    if (srcType == "location") {
+                        it.lowestLocation = src
+                        srcType = "x"
+                    }
                 }
             }
         }
-
     }
 
 }
 
 fun main() {
     println(Conversion(input).lowestLocation)
+
 }
