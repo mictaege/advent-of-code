@@ -1,6 +1,5 @@
 package io.github.mictaege.aoc.y2023.d05.p2
 
-import io.github.mictaege.aoc.y2023.d05.example
 import io.github.mictaege.aoc.y2023.d05.input
 import kotlin.math.min
 
@@ -17,7 +16,7 @@ class MappingRange(val original: String) {
     val srcStart = original.split(Regex("\\s+"))[1].toLong()
     val srcEnd = srcStart + rangeLength
     val destStart = original.split(Regex("\\s+"))[0].toLong()
-    val destEnd = srcStart + rangeLength
+    val destEnd = destStart + rangeLength
     val diff = srcStart - destStart
 
     fun matchingDest(start: Long) = start - diff
@@ -78,5 +77,4 @@ class Conversion(val original: String) {
 
 fun main() {
     println(Conversion(input).lowestLocation)
-
 }
