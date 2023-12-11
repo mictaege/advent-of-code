@@ -71,7 +71,7 @@ class Network(val original: String) {
 }
 
 fun main() {
-    //24.035.773.251.517
+    // 24.035.773.251.517
     // Correct for the example, but far to slow to solve
     // the real input in a meaningful time
     val net = Network(example_3)
