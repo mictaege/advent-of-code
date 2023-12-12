@@ -1,8 +1,8 @@
 package io.github.mictaege.aoc.y2023.d10.p2
 
-import io.github.mictaege.aoc.y2023.d10.example_3
 import io.github.mictaege.aoc.y2023.d10.input
 import io.github.mictaege.aoc.y2023.d10.p2.Direction.*
+import java.awt.Polygon
 
 enum class Direction {
     NORTH, EAST, SOUTH, WEST, NONE, UNKNOWN
@@ -26,6 +26,10 @@ enum class Tile(val char: Char, val a: Direction, val b : Direction) {
         GROUND -> false
         START -> true
         else -> direction in listOf(a, b )
+    }
+
+    override fun toString(): String {
+        return "$char"
     }
 
 }
@@ -54,16 +58,14 @@ class Cell(val pos: Pos, val char: Char) {
         }
     }
 
-    fun isInterior(table: Table): Boolean {
-        if (tile != Tile.GROUND) {
-            return false
-        } else {
-            val x_Axis = (0..table.max_X).toList().map { Pos(pos.y, it) }.filterNot { it == pos }
-            val intersections = x_Axis.filter { it -> it in table.steps.map { c -> c.pos } }.size
-            return intersections == 0 || intersections % 2 != 0
-        }
-    }
+    fun isBorder(table: Table) = pos.y == 0 || pos.y == table.max_Y || pos.x == 0 || pos.x == table.max_X
 
+    /* @see https://de.wikipedia.org/wiki/Punkt-in-Polygon-Test_nach_Jordan */
+    fun isInterior(table: Table) = table.polygon.contains(pos.x, pos.y)
+
+    override fun toString(): String {
+        return "$char"
+    }
 }
 
 class Table(val original: String) {
@@ -72,7 +74,8 @@ class Table(val original: String) {
     val max_X: Int
     val start: Cell
     val steps: List<Cell>
-    val interiorCells: List<Cell>
+    val polygon: Polygon
+    //val interiorCells: List<Cell>
 
     init {
         cells = mutableMapOf()
@@ -94,12 +97,50 @@ class Table(val original: String) {
             steps.add(cell)
             cell = cell.findNeighbour(this)
         }
-        interiorCells = cells.values.filter { it.isInterior(this) }
 
+        polygon = Polygon()
+        steps.forEach {
+            polygon.addPoint(it.pos.x, it.pos.y)
+        }
+    }
+
+    fun interiorCells(): Int {
+        var i = 0
+        for (y in 0..max_Y) {
+            for (x in 0..max_X) {
+                val cell = cells[Pos(y, x)]!!
+                if (cell.pos !in steps.map { it.pos }) {
+                    if (cell.isInterior(this)) {
+                        i++
+                    }
+                }
+            }
+        }
+        return i
+    }
+
+    fun print() {
+        for (y in 0..max_Y) {
+            for (x in 0..max_X) {
+                val cell = cells[Pos(y, x)]!!
+                if (cell.pos !in steps.map { it.pos }) {
+                    if (cell.isInterior(this)) {
+                        print("I")
+                    } else {
+                        print("O")
+                    }
+                } else {
+                    print(cell)
+                }
+            }
+            println("")
+        }
     }
 }
 
 fun main() {
-    val result = Table(example_3).interiorCells.size
+    val table = Table(input)
+    table.print()
+    val result = table.interiorCells()
     println(result)
 }

@@ -28,6 +28,57 @@ val example_3 = """
     ...........
 """.trimIndent()
 
+val example_4 = """
+    ..........
+    .S------7.
+    .|F----7|.
+    .||....||.
+    .||....||.
+    .|L-7F-J|.
+    .|..||..|.
+    .L--JL--J.
+    ..........
+""".trimIndent()
+
+val result_5 = """
+    bF----7F7F7F7F-7bbbb
+    b|F--7||||||||FJiiib
+    b||oFJ||||||||L7ooob
+    FJL7L7LJLJ||LJoL-7ib
+    L--JoL7oooLJS7F-7L7b
+    boooF-JiiF7FJ|L7L7L7
+    boooL7oF7||L7|iL7L7|
+    boooo|FJLJ|FJ|F7|oLJ
+    boooFJL-7i||i||||iib
+    bbbbL---JbLJbLJLJbbb
+""".trimIndent()
+
+val example_5 = """
+    .F----7F7F7F7F-7....
+    .|F--7||||||||FJ....
+    .||.FJ||||||||L7....
+    FJL7L7LJLJ||LJ.L-7..
+    L--J.L7...LJS7F-7L7.
+    ....F-J..F7FJ|L7L7L7
+    ....L7.F7||L7|.L7L7|
+    .....|FJLJ|FJ|F7|.LJ
+    ....FJL-7.||.||||...
+    ....L---J.LJ.LJLJ...
+""".trimIndent()
+
+val example_6 = """
+    FF7FSF7F7F7F7F7F---7
+    L|LJ||||||||||||F--J
+    FL-7LJLJ||||||LJL-77
+    F--JF--7||LJLJ7F7FJ-
+    L---JF-JLJ.||-FJLJJ7
+    |F|F-JF---7F7-L7L|7|
+    |FFJF7L7F-JF7|JL---7
+    7-L-JL7||F7|L7F-7F7|
+    L.L7LFJ|||||FJL7||LJ
+    L7JLJL-JLJLJL--JLJ.L
+""".trimIndent()
+
 val input = """
     -L7F7-J77|-FF7F-.|-JF77FF-FLJF--F--77-77-F|-F77.FF|7-F|-L-LL.L.77F7F-J.F-LFJ7-F|-F7J-F|.F7.FF-7.FJ7FL7F|-F-F---F-FL-F-7J7F.F77.F77FJ.77.L.7J
     J.||L-7FL|.|LF|.7JF-LJF-J7J.|7.F-7FF7F|FF-F-JJ-77J|F.|J-|.|.FL7--F77LJF|-LLL-7J||LJ7-JJ.LJL-J|F77|F-7-J..-F-JLFFFJJ||7|7-F-J7--L7-FJLJLJ-L..
