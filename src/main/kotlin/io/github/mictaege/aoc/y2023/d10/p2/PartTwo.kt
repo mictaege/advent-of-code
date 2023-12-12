@@ -75,7 +75,6 @@ class Table(val original: String) {
     val start: Cell
     val steps: List<Cell>
     val polygon: Polygon
-    //val interiorCells: List<Cell>
 
     init {
         cells = mutableMapOf()
