@@ -58,8 +58,6 @@ class Cell(val pos: Pos, val char: Char) {
         }
     }
 
-    fun isBorder(table: Table) = pos.y == 0 || pos.y == table.max_Y || pos.x == 0 || pos.x == table.max_X
-
     /* @see https://de.wikipedia.org/wiki/Punkt-in-Polygon-Test_nach_Jordan */
     fun isInterior(table: Table) = table.polygon.contains(pos.x, pos.y)
 
