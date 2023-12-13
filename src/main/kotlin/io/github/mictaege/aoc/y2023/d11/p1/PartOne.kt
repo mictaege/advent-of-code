@@ -19,8 +19,6 @@ data class Pos(val y: Int, val x: Int) {
     fun left() = Pos(y, x - 1)
     fun right() = Pos(y, x + 1)
 
-    fun neighbours() = listOf(up(), down(), left(), right())
-
 }
 
 class Sector(val pos: Pos, val char: Char, val number: Int) {
