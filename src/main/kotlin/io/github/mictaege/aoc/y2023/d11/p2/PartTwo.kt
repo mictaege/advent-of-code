@@ -58,18 +58,8 @@ class Universe(val original: String, val expFactor: Long) {
             }
         }
 
-        emptyRows = mutableSetOf()
-        for (i in 0..max_Y) {
-            if (isEmptyRow(i)) {
-                emptyRows.add(i)
-            }
-        }
-        emptyColumns = mutableSetOf()
-        for (i in 0..max_X) {
-            if (isEmptyColumn(i)) {
-                emptyColumns.add(i)
-            }
-        }
+        emptyRows = (0..max_Y).filter { isEmptyRow(it) }.toSet()
+        emptyColumns = (0..max_X).filter { isEmptyColumn(it) }.toSet()
 
         routes = sectors.values.filter { it.type == Type.GALAXY }.cartesianProduct().map { Route(it.first, it.second) }
 
