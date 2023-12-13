@@ -2,7 +2,6 @@ package io.github.mictaege.aoc.y2023.d11.p1
 
 import io.github.mictaege.aoc.y2023.cartesianProduct
 import io.github.mictaege.aoc.y2023.d11.input
-import java.util.*
 
 enum class Type(val char: Char) {
     SPACE('.'),
@@ -33,7 +32,7 @@ class Sector(val pos: Pos, val char: Char, val number: Int) {
 }
 
 class Route(val a: Sector, val b: Sector) {
-    var distance = 0
+    val distance = Math.abs(a.pos.x - b.pos.x) + Math.abs(a.pos.y - b.pos.y)
     override fun toString(): String {
         return "Route(a=$a, b=$b, distance=$distance)"
     }
@@ -81,8 +80,6 @@ class Universe(val original: String) {
 
         routes = sectors.values.filter { it.type == Type.GALAXY }.cartesianProduct().map { Route(it.first, it.second) }
 
-        routes.forEach { calculateDistance(it) }
-
         overallDistance = routes.sumOf { it.distance }
     }
 
@@ -128,29 +125,6 @@ class Universe(val original: String) {
 
     fun contains(pos: Pos) = sectors.keys.contains(pos)
 
-    /* @see https://de.wikipedia.org/wiki/Breitensuche */
-    private fun calculateDistance(route: Route) {
-        val distances = mutableMapOf<Pos, Int>()
-        distances[route.a.pos] = 0
-
-        val queue = LinkedList<Pos>()
-        queue.add(route.a.pos)
-
-        while (queue.isNotEmpty()) {
-            val current = queue.remove()
-            val currentDist = distances[current]!!
-            current.neighbours()
-                .filter { contains(it) }
-                .filter { it -> !distances.contains(it) }
-                .forEach {
-                    queue.add(it)
-                    distances[it] = currentDist + 1
-                }
-        }
-
-        route.distance = distances[route.b.pos]!!
-    }
-
     fun print() {
         for (y in 0..max_Y) {
             for (x in 0..max_X) {
@@ -166,7 +140,6 @@ class Universe(val original: String) {
 
 
 fun main() {
-    //calculation is correct but pretty slow and takes several minutes for the real input
     val result = Universe(input).overallDistance
     println(result)
 }
