@@ -1,6 +1,7 @@
 package io.github.mictaege.aoc.y2023.d11.p1
 
-import io.github.mictaege.aoc.y2023.d11.example
+import io.github.mictaege.aoc.y2023.cartesianProduct
+import io.github.mictaege.aoc.y2023.d11.input
 import java.util.*
 
 enum class Type(val char: Char) {
@@ -78,27 +79,15 @@ class Universe(val original: String) {
             }
         }
 
-        routes = sectors.values.filter { it.type == Type.GALAXY }
-            .fold(listOf(emptyList<Sector>())) { acc, s ->
-                acc + acc.map { it + s }
-            }.filter { it.size == 2 }
-            .map { Route(it[0], it[1]) }
+        routes = sectors.values.filter { it.type == Type.GALAXY }.cartesianProduct().map { Route(it.first, it.second) }
 
         routes.forEach { calculateDistance(it) }
 
         overallDistance = routes.sumOf { it.distance }
     }
 
-    private fun isEmptyRow(i: Int): Boolean {
-        var anyGalaxy = false
-        for (x in 0..max_X) {
-            val sector = sectors[Pos(i, x)]!!
-            if (sector.type == Type.GALAXY) {
-                anyGalaxy = true
-            }
-        }
-        return !anyGalaxy
-    }
+    private fun isEmptyRow(i: Int): Boolean =
+        !sectors.filter { it.value.pos.y == i }.filter { it.value.type == Type.GALAXY }.any()
 
     private fun addEmptyRow(i: Int) {
         for (y in max_Y.downTo(i)) {
@@ -117,16 +106,8 @@ class Universe(val original: String) {
         }
     }
 
-    private fun isEmptyColumn(i: Int): Boolean {
-        var anyGalaxy = false
-        for (y in 0..max_Y) {
-            val sector = sectors[Pos(y, i)]!!
-            if (sector.type == Type.GALAXY) {
-                anyGalaxy = true
-            }
-        }
-        return !anyGalaxy
-    }
+    private fun isEmptyColumn(i: Int): Boolean =
+        !sectors.filter { it.value.pos.x == i }.filter { it.value.type == Type.GALAXY }.any()
 
     private fun addEmptyColumn(i: Int) {
         for (x in max_X.downTo(i)) {
@@ -183,8 +164,9 @@ class Universe(val original: String) {
 
 }
 
+
 fun main() {
-    //example works but real input leads to out-of-mem while creating the routes
-    val result = Universe(example).overallDistance
+    //calculation is correct but pretty slow and takes several minutes for the real input
+    val result = Universe(input).overallDistance
     println(result)
 }
