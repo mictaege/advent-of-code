@@ -14,12 +14,10 @@ enum class Condition(val char: Char) {
     }
 
 }
-class Spring(val char: Char) {
-    val condition = Condition.from(char)
-}
+data class Spring(val condition: Condition)
 
 class Record(val original: String) {
-    val springs = original.split(" ")[0].toCharArray().map { Spring(it) }
+    val springs = original.split(" ")[0].toCharArray().map { Spring(Condition.from(it)) }
     val rules = original.split(" ")[1].split(",").map { Rule(it.toInt()) }
 }
 
