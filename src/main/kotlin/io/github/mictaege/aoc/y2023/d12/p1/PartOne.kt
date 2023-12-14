@@ -2,7 +2,11 @@ package io.github.mictaege.aoc.y2023.d12.p1
 
 import io.github.mictaege.aoc.y2023.d12.example
 
-class Rule(val char: Int)
+class DamagedGroup(val length: Int)
+
+class Rule(val original: String) {
+    val damagedGroups = original.split(",").map { DamagedGroup(it.toInt()) }
+}
 
 enum class Condition(val char: Char) {
     OPERATIONAL('.'),
@@ -18,7 +22,7 @@ data class Spring(val condition: Condition)
 
 class Record(val original: String) {
     val springs = original.split(" ")[0].toCharArray().map { Spring(Condition.from(it)) }
-    val rules = original.split(" ")[1].split(",").map { Rule(it.toInt()) }
+    val rule = Rule(original.split(" ")[1])
 }
 
 class Report(val original: String) {
