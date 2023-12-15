@@ -10,7 +10,7 @@ data class Possibilities(val springs: List<Spring>) {
 
     fun isValid(rule: Rule): Boolean {
         val groups = springs.splitBy(Spring(OPERATIONAL)).map { Group(it.size) }
-        return groups == rule.group
+        return groups == rule.groups
     }
 
 }
@@ -18,7 +18,7 @@ data class Possibilities(val springs: List<Spring>) {
 data class Group(val length: Int)
 
 class Rule(val original: String, val springs: List<Spring>) {
-    val group = original.split(",").map { Group(it.toInt()) }
+    val groups = original.split(",").map { Group(it.toInt()) }
     val possibilities = mutableListOf<Possibilities>()
     val valid: List<Possibilities>
 
